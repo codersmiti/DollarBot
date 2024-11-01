@@ -4,6 +4,6 @@ setup(
     name='Track My Dollar',
     version='1.0',
     description='An easy to use Telegram Bot to track everyday expenses',
-    author='Dev, Prakruthi, Radhika, Rohan, Sunidhi',
+    author='Mrudani, Parth, Jamnesh',
     packages=find_packages()
 )
