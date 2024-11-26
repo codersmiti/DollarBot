@@ -1,134 +1,191 @@
-"""
-
-MIT License
-
-Copyright (c) 2021 Dev Kumar
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
-"""
-
 import matplotlib
 import matplotlib.pyplot as plt
+import numpy as np
 
-matplotlib.use('Agg')
+matplotlib.use("Agg")
+
+# === Documentation of graphing.py ===
+
+
+def viewBudget(data):
+    sorted_data = {}
+    sorted_data = {k: v for k, v in sorted(data.items(), key=lambda item: item[1])}
+    values = []
+    labels = []
+    for k, v in sorted_data.items():
+        values.append(v)
+        labels.append(k)
+    plt.pie(values, labels=values, counterclock=False, shadow=True)
+    plt.title("Category Wise Budget")
+    plt.legend(labels, loc="center")
+    plt.savefig("budget.png", bbox_inches="tight")
+    plt.close()
 
 
 def addlabels(x, y):
+    """
+    addlabels(x, y): This function is used to add the labels to the graph.
+    It takes the expense values and adds the values inside the bar graph for each expense type
+    """
     for i in range(len(x)):
-        plt.text(i, y[i] // 2, y[i], ha='center')
+        plt.text(i, y[i] // 2, y[i], ha="center")
 
 
-def visualize(total_text, budgetData):
-    # set the color for bars
-    colors = ['red', 'cornflowerblue', 'greenyellow', 'orange', 'violet', 'grey']
-    # plot the expense bar chart
-    total_text_split = [line for line in total_text.split('\n') if line.strip() != '']
-    categ_val = {}
-    # summarize the expense by categories
+def visualize(total_text, monthly_budget):
+    """
+    visualize(total_text): This is the main function used to implement the graphing
+    part of display feature. This file is called from display.py, and takes the user
+    expense as a string and creates a dictionary which in turn is fed as input matplotlib to create the graph
+    """
+    n1 = len(monthly_budget)
+    r1 = np.arange(n1)
+    width = 0.45
+    total_text_split = [line for line in total_text.split("\n") if line.strip() != ""]
+    monthly_budget_str = ""
+    for key, value in monthly_budget.items():
+        monthly_budget_str += str(key) + " $" + str(value) + "\n"
+    monthly_budget_split = [
+        line for line in monthly_budget_str.split("\n") if line.strip() != ""
+    ]
+
+    monthly_budget_categ_val = {}
+    for j in monthly_budget_split:
+        x = j.split(" ")
+        x[1] = x[1].replace("$", "")
+        monthly_budget_categ_val[x[0]] = float(x[1])
+
+    categ_val = {key: 0 for key in monthly_budget_categ_val}
     for i in total_text_split:
-        a = i.split(' ')
+        a = i.split(" ")
         a[1] = a[1].replace("$", "")
         categ_val[a[0]] = float(a[1])
 
-    # set categories as x-axis and amount as y-axis
     x = list(categ_val.keys())
     y = list(categ_val.values())
-
-    plt.bar(categ_val.keys(), categ_val.values(), color=colors, edgecolor='black')
+    n2 = len(x)
+    r2 = np.arange(n2)
+    plt.bar(r2, categ_val.values(), width=width, label="your spendings")
+    plt.bar(
+        r1 + width, monthly_budget_categ_val.values(), width=width, label="your budget"
+    )
     addlabels(x, y)
 
     plt.ylabel("Expenditure")
     plt.xlabel("Categories")
-    plt.xticks(rotation=45)
-
-    # plot budget in the horizontal line format
-    lines = []
-    labels = []
-    if isinstance(budgetData, str):
-        # if budget data is str denoting it is overall budget
-        lines.append(plt.axhline(y=float(budgetData), color="r", linestyle="-"))
-        labels.append("overall budget")
-    elif isinstance(budgetData, dict):
-        # if budget data is dict denoting it is category budget
-        colorCnt = 0
-        # to avoid the budget override by each others, record the budget and adjust the position of the line
-        duplicate = {}
-        for key in budgetData.keys():
-            val = budgetData[key]
-            plotVal = float(val)
-            if val in duplicate:
-                # if duplicate, move line upwards
-                plotVal += 2 * duplicate[val]
-            lines.append(plt.axhline(y=plotVal, color=colors[colorCnt % len(colors)], linestyle="-"))
-
-            # record the amount
-            duplicate[val] = duplicate[val] + 1 if val in duplicate else 1
-            labels.append(key)
-            colorCnt += 1
-
-    plt.legend(lines, labels)
-    plt.savefig('expenditure.png', bbox_inches='tight')
-
-    # clean the plot to avoid the old data remains on it
-    plt.clf()
-    plt.cla()
+    plt.xticks(r1 + width / 2, monthly_budget_categ_val.keys(), rotation=90)
+    plt.legend()
+    plt.savefig("expenditure.png", bbox_inches="tight")
     plt.close()
 
-def vis(total_text):
-    total_text_split = [line for line in total_text.split('\n') if line.strip() != '']
-    categ_val = {}
-    for i in total_text_split:
-        a = i.split(' ')
-        a[1] = a[1].replace("$", "")
-        categ_val[a[0]] = float(a[1])
+def visualize_pie_chart(total_dict):
+    """
+    Generate a pie chart for the spending data from a dictionary input.
+    total_dict: A dictionary where keys are categories and values are spending amounts.
+    """
+    categories = list(total_dict.keys())
+    amounts = list(total_dict.values())
 
-    x = list(categ_val.keys())
-    y = list(categ_val.values())
+    # Check if there's any data to plot
+    if not categories or not amounts:
+        raise ValueError("No data available to visualize.")
 
-    #plt.bar(categ_val.keys(), categ_val.values(), color=[(1.00, 0, 0, 0.6), (0.2, 0.4, 0.6, 0.6), (0, 1.00, 0, 0.6), (1.00, 1.00, 0, 1.00)], edgecolor='blue')
-    #addlabels(x, y)
-    plt.clf()
-    plt.pie(y, labels=x, autopct='%.1f%%')
-    #plt.ylabel("Categories")
-    #plt.xlabel("Expenditure")
-    #plt.xticks(rotation=90)
+    plt.figure(figsize=(8, 8))
+    plt.pie(
+        amounts,
+        labels=categories,
+        autopct="%1.1f%%",
+        startangle=140,
+        colors=plt.cm.Paired.colors,
+    )
+    plt.title("Spending Distribution")
+    plt.savefig("expenditure.png", bbox_inches="tight")
+    plt.close()
 
-    plt.savefig('pie.png')
+
+def visualize_bar_with_budget(total_dict, budget_dict):
+    """
+    Generate a bar graph for the spending data alongside the budget data.
+    total_dict: A dictionary where keys are categories and values are spending amounts (floats).
+    budget_dict: A dictionary where keys are categories and values are budget amounts (floats).
+    """
+    # Ensure the values are numeric (float)
+    categories = list(budget_dict.keys())
+    spending_values = [float(total_dict.get(category, 0)) for category in categories]  # Make sure values are float
+    budget_values = [float(budget_dict.get(category, 0)) for category in categories]  # Make sure values are float
+
+    # Check if there's any data to plot
+    if not categories or not spending_values or not budget_values:
+        raise ValueError("No data available to visualize.")
+
+    width = 0.35  # width of the bars
+    x = np.arange(len(categories))
+
+    plt.figure(figsize=(10, 6))
+    plt.bar(x - width / 2, spending_values, width, label="Your Spendings", color="skyblue")
+    plt.bar(x + width / 2, budget_values, width, label="Your Budget", color="orange")
+    plt.ylabel("Amount ($)")
+    plt.xlabel("Categories")
+    plt.title("Spending vs Budget by Category")
+    plt.xticks(x, categories, rotation=45, ha="right")
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig("expenditure.png", bbox_inches="tight")
+    plt.close()
 
 
-def viz(total_text):
-    total_text_split = [line for line in total_text.split('\n') if line.strip() != '']
-    categ_val = {}
-    for i in total_text_split:
-        a = i.split(' ')
-        a[1] = a[1].replace("$", "")
-        categ_val[a[0]] = float(a[1])
+def visualize_bar_without_budget(total_dict):
+    """
+    Generate a bar graph for the spending data without considering the budget.
+    total_dict: A dictionary where keys are categories and values are spending amounts.
+    """
+    categories = list(total_dict.keys())
+    amounts = list(total_dict.values())
 
-    x = list(categ_val.keys())
-    y = list(categ_val.values())
-    plt.clf()
-    plt.bar(categ_val.keys(), categ_val.values(), color=[(1.00, 0, 0, 0.6), (0.2, 0.4, 0.6, 0.6), (0, 1.00, 0, 0.6), (1.00, 1.00, 0, 1.00)], edgecolor='blue')
-    addlabels(x, y)
+    # Check if there's any data to plot
+    if not categories or not amounts:
+        raise ValueError("No data available to visualize.")
 
-    plt.ylabel("Categories")
-    plt.xlabel("Expenditure")
-    plt.xticks(rotation=45)
+    plt.figure(figsize=(10, 6))
+    plt.bar(categories, amounts, color="skyblue", alpha=0.7)
+    plt.ylabel("Expenditure ($)")
+    plt.xlabel("Categories")
+    plt.title("Spending by Category (Without Budget)")
+    plt.xticks(rotation=45, ha="right")
+    plt.tight_layout()
+    plt.savefig("expenditure.png", bbox_inches="tight")
+    plt.close()
 
-    plt.savefig('expend.png', bbox_inches='tight')
+def visualize_bar_graph(months, spending_values):
+    """
+    Visualize monthly expenses comparison using a bar chart.
+    months: List of month labels (e.g., 'Nov-2024', 'Dec-2024')
+    spending_values: List of total spending amounts for each month
+    """
+    plt.figure(figsize=(10, 6))
+    x = np.arange(len(months))  # Position of the bars
+
+    plt.bar(x, spending_values, width=0.6, color="skyblue", label="Monthly Expenses")
+    plt.ylabel("Amount ($)")
+    plt.xlabel("Month")
+    plt.title("Monthly Expenses Comparison")
+    plt.xticks(x, months, rotation=45, ha="right")
+    plt.tight_layout()
+    plt.savefig("expenditure.png", bbox_inches="tight")
+    plt.close()
+    
+def visualize_line_chart(months, spending_values):
+    """
+    Visualize monthly expenses trend using a line chart.
+    months: List of month labels (e.g., 'Nov-2024', 'Dec-2024')
+    spending_values: List of total spending amounts for each month
+    """
+    plt.figure(figsize=(10, 6))
+    plt.plot(months, spending_values, marker='o', color='skyblue', label="Monthly Expenses")
+    
+    plt.ylabel("Amount ($)")
+    plt.xlabel("Month")
+    plt.title("Monthly Expenses Trend")
+    plt.xticks(rotation=45, ha="right")
+    plt.tight_layout()
+    plt.savefig("expenditure.png", bbox_inches="tight")
+    plt.close()
