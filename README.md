@@ -1,7 +1,7 @@
 <hr>
-![MIT license](https://img.shields.io/badge/License-MIT-green.svg)
-[![DOI](https://zenodo.org/badge/894631395.svg)](https://doi.org/10.5281/zenodo.14225916)
 
+[![DOI](https://zenodo.org/badge/894631395.svg)](https://doi.org/10.5281/zenodo.14225916)
+![MIT license](https://img.shields.io/badge/License-MIT-green.svg)
 ![Style Checker](https://github.com/ymdatta/DollarBot/actions/workflows/styleChecker.yml/badge.svg)
 
 [![Build Status](https://app.travis-ci.com/sak007/MyDollarBot-BOTGo.svg?branch=main)](https://app.travis-ci.com/github/sak007/MyDollarBot-BOTGo)
