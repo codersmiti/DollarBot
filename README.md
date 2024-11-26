@@ -309,9 +309,9 @@ By contributing to DollarBot, you agree that your contributions will be licensed
 
 (in alphabetical order)
 
-1. Mohan Yelugoti (myelugo@ncsu.edu)
-2. Rishabh Kala (rkala@ncsu.edu)
-3. Sreehith Yachamaneni (syacham@ncsu.edu)
+1. Jayneel Shah (jshah26@ncsu.edu)
+2. Smiti Kothari (skothar3@ncsu.edu)
+3. Vedant Patel (vpatel32@ncsu.edu)
 
 ## Support
 
