@@ -80,7 +80,7 @@ This bot has following functionalities:
 
 ## What new was added in V3.0!!
 - Fixed the owing functionality to generate the proper amounts of owed/owing to expenses for the user
-- Email functionality to register how much users owe each other
+- Email functionality to send an email having information about how much users owe each other
 - Enhanced visualisation options with options to plot a pie chart, bar graph with budget and without budget
 - Visualising the trend of expenses for different months/days
 - Currency Converter Feature for the users to convert an expense in a particular currency to another currency
@@ -272,10 +272,21 @@ As a contributor, we have tried to make the system as decoupled as possible so t
 - [x] Detailed documentation for each code file.
 - [x] New and improved test cases for the code base.
 
-### Future Enhancements
+### Phase 3
+- [x] Ability to add expenses of multiple users.
+- [x] Ability to manage expenses among multiple users to calculate aggregate sum owed.
+- [x]Fixed the owing functionality to generate the proper amounts of owed/owing to expenses for the user
+- [x]Email functionality to send an email having information about how much users owe each other
+- [x]Enhanced visualisation options with options to plot a pie chart, bar graph with budget and without budget
+- [x]Visualising the trend of expenses for different months/days
+- [x]Currency Converter Feature for the users to convert an expense in a particular currency to another currency
+- [x]OCR Feature which uses Google Cloud Vision to scan the bill images and record the expense
+- [x] Ability to store pictures of physical bills tied to expenses for user reference.
+- [x]User studies of the application.
+- [x]Detailed documentation for each code file.
+- [x]New and improved test cases for the code base.
 
-- [ ] Ability to add expenses of multiple users.
-- [ ] Ability to manage expenses among multiple users to calculate aggregate sum owed.
+### Future Enhancements
 - [ ] Adding a more robust cloud database.
 - [ ] Aggregation of an AI/ML based estimator that takes into account inflation.
 - [ ] Improve User Interface design.
