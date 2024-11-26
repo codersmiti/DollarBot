@@ -291,7 +291,7 @@ As a contributor, we have tried to make the system as decoupled as possible so t
 - [ ] Aggregation of an AI/ML based estimator that takes into account inflation.
 - [ ] Improve User Interface design.
 - [ ] Adding normal conversational abilities to the chatbot.
-- [ ] Ability to store pictures of physical bills tied to expenses for user reference.
+
 
  ### Link to Project Board: [DollarBot Project Board](https://github.com/users/ymdatta/projects/3)
 
