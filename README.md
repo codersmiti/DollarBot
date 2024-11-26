@@ -35,7 +35,9 @@ This bot has following functionalities:
 
 ## What DollarBot Can Do?
 
-- Add/Record a new spending
+- Add/Register new user:
+  Functionality to add or register a new user to share expenses with
+- Add/Record a new spending:
   The user has the option to add or record a new expense by either entering the expense manually or by uploading the image of the bill
   User can select who paid for a particular expense and which other users are also involved in the expense.
 - Calculate the sum of your expenditure for the current day/month
@@ -58,6 +60,8 @@ This bot has following functionalities:
 - Delete particular expenses.
 - Set a daily reminder to track your expenses for either the current day or the current month.
 - Menu button to improve the UI.
+- Currency Converter:
+  User can convert the amount from one currency to another currency using /convert command. 
 
 ## What's new in V2.0!!
 - Maintain two types of accounts for spending purposes.
