@@ -12,6 +12,8 @@
 ![Github pull requests](https://img.shields.io/github/issues-pr/ymdatta/DollarBot)
 
 ![Fork](https://img.shields.io/github/forks/deekay2310/MyDollarBot?style=social)
+
+[![GitHub contributors](https://img.shields.io/github/contributors/ymdatta/DollarBot)](https://github.com/codersmiti/DollarBot/graphs/contributors)
 <hr>
 
 # 💰 DollarBot v2.0 - Budgeting	 On The Go 💰
