@@ -2,7 +2,7 @@
 
 [![DOI](https://zenodo.org/badge/894631395.svg)](https://doi.org/10.5281/zenodo.14225916)
 ![MIT license](https://img.shields.io/badge/License-MIT-green.svg)
-
+![GitHub](https://img.shields.io/badge/Language-Python-blue.svg)
 ![Style Checker](https://github.com/ymdatta/DollarBot/actions/workflows/styleChecker.yml/badge.svg)
 [![Platform](https://img.shields.io/badge/Platform-Telegram-blue)](https://desktop.telegram.org/)
 [![Build Status](https://app.travis-ci.com/sak007/MyDollarBot-BOTGo.svg?branch=main)](https://app.travis-ci.com/github/sak007/MyDollarBot-BOTGo)
