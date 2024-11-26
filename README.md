@@ -16,7 +16,7 @@
 [![GitHub contributors](https://img.shields.io/github/contributors/ymdatta/DollarBot)](https://github.com/codersmiti/DollarBot/graphs/contributors)
 <hr>
 
-# 💰 DollarBot v2.0 - Budgeting	 On The Go 💰
+# 💰 DollarBot v3.0 - Budgeting	 On The Go 💰
 
 <hr>
 <p align="center">
@@ -36,6 +36,8 @@ This bot has following functionalities:
 ## What DollarBot Can Do?
 
 - Add/Record a new spending
+  The user has the option to add or record a new expense by either entering the expense manually or by uploading the image of the bill
+  User can select who paid for a particular expense and which other users are also involved in the expense.
 - Calculate the sum of your expenditure for the current day/month
 - Display your spending history
 - Clear/Erase all your records
@@ -48,8 +50,11 @@ This bot has following functionalities:
   User can see the budget value for the total expense and/or for each of the existing categories in the /display function
 - Better visualization:
   Added pie charts, bar graphs with and without budget lines for the user to have a look at the spending history in a better manner
+  Added bar graph and line charts to even compare the monthly expenditures and daily expenditures
   Added bar graph in the /history command to see spending across different categories
   User can see the daily and monthly expenses for spending history
+- Owings:
+  Added the feature where the user can see how much is he owed/owes to another user
 - Delete particular expenses.
 - Set a daily reminder to track your expenses for either the current day or the current month.
 - Menu button to improve the UI.
