@@ -78,6 +78,18 @@ This bot has following functionalities:
 - Detailed documentation for each code file.
 - New and improved test cases for the code base.
 
+## What new was added in V3.0!!
+- Fixed the owing functionality to generate the proper amounts of owed/owing to expenses for the user
+- Email functionality to register how much users owe each other
+- Enhanced visualisation options with options to plot a pie chart, bar graph with budget and without budget
+- Visualising the trend of expenses for different months/days
+- Currency Converter Feature for the users to convert an expense in a particular currency to another currency
+- OCR Feature which uses Google Cloud Vision to scan the bill images and record the expense
+- Ability to add new users and share the expenses among multiple users.
+- User studies of the application.
+- Detailed documentation for each code file.
+- New and improved test cases for the code base.
+
 ## Use Case
 * One can use DollarBot to save time one would otherwise spend manually inputting numbers into a spreadsheet -- all the while encouraging you to spend less and save more with budgeting feature. 
 
