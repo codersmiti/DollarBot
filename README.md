@@ -1,5 +1,5 @@
 <hr>
-
+![MIT license](https://img.shields.io/badge/License-MIT-green.svg)
 [![DOI](https://zenodo.org/badge/894631395.svg)](https://doi.org/10.5281/zenodo.14225916)
 
 ![Style Checker](https://github.com/ymdatta/DollarBot/actions/workflows/styleChecker.yml/badge.svg)
