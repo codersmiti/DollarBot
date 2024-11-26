@@ -1,11 +1,8 @@
 <hr>
 
-![MIT license](https://img.shields.io/badge/License-MIT-green.svg)
+
 ![Style Checker](https://github.com/ymdatta/DollarBot/actions/workflows/styleChecker.yml/badge.svg)
-[![Platform](https://img.shields.io/badge/Platform-Telegram-blue)](https://desktop.telegram.org/)
-![GitHub](https://img.shields.io/badge/Language-Python-blue.svg)
-[![GitHub contributors](https://img.shields.io/github/contributors/ymdatta/DollarBot)](https://github.com/rrajpuro/DollarBot/graphs/contributors)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10210342.svg)](https://doi.org/10.5281/zenodo.10210342)
+
 [![Build Status](https://app.travis-ci.com/sak007/MyDollarBot-BOTGo.svg?branch=main)](https://app.travis-ci.com/github/sak007/MyDollarBot-BOTGo)
 [![codecov](https://codecov.io/gh/sak007/MyDollarBot-BOTGo/branch/main/graph/badge.svg?token=5AYMR8MNMP)](https://codecov.io/gh/sak007/MyDollarBot-BOTGo)
 [![GitHub open issues](https://img.shields.io/github/issues/ymdatta/DollarBot)](https://github.com/ymdatta/DollarBot/issues?q=is%3Aopen+is%3Aissue)
