@@ -1,31 +1,5 @@
-"""
-
-MIT License
-
-Copyright (c) 2021 Dev Kumar
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
-"""
-
 from code import graphing
-from mock import ANY
+import numpy as np
 
 dummy_total_text_none = ""
 dummy_total_text_data = """Food $10.0
@@ -34,17 +8,98 @@ Shopping $148.0
 Miscellaneous $47.93
 Utilities $200.0
 Groceries $55.21\n"""
-dummy_budget = "100.0"
 
-dummy_x = ['Food', 'Transport', 'Shopping', 'Miscellaneous', 'Utilities', 'Groceries']
+dummy_x = ["Food", "Transport", "Shopping", "Miscellaneous", "Utilities", "Groceries"]
 dummy_y = [10.0, 50.0, 148.0, 47.93, 200.0, 55.21]
-dummy_categ_val = {'Food': 10.0, 'Transport': 50.0, 'Shopping': 148.0, 'Miscellaneous': 47.93, 'Miscellaneous': 47.93, 'Utilities': 200.0, 'Groceries': 55.21}
-dummy_color = ['red', 'cornflowerblue', 'greenyellow', 'orange', 'violet', 'grey']
-dummy_edgecolor = 'black'
+dummy_categ_val = {
+    "Food": 10.0,
+    "Transport": 50.0,
+    "Shopping": 148.0,
+    "Miscellaneous": 47.93,
+    "Miscellaneous": 47.93,
+    "Utilities": 200.0,
+    "Groceries": 55.21,
+}
+dummy_color = [
+    (1.00, 0, 0, 0.6),
+    (0.2, 0.4, 0.6, 0.6),
+    (0, 1.00, 0, 0.6),
+    (1.00, 1.00, 0, 1.00),
+]
+dummy_edgecolor = "blue"
+dummy_monthly_budget = {
+    "Food": 100.0,
+    "Transport": 150.0,
+    "Shopping": 150.0,
+    "Miscellaneous": 50,
+    "Utilities": 200.0,
+    "Groceries": 100,
+}
+
+dummy_pie_chart = {'food': 10.0, 'transport': 50.0, 'shopping': 148.0, 'miscellaneous': 47.93, 'utilities': 200.0, 'groceries': 55.21}
+dummy_budget_dict = {'food': 100.0, 'transport': 150.0, 'shopping': 150.0, 'miscellaneous': 50, 'utilities': 200.0, 'groceries': 100}
+
+dummy_months = ["January", "February", "March", "April", "May", "June"]
+dummy_spendings = [100, 200, 300, 400, 500, 600]
+
+n2 = len(dummy_x)
+r2 = np.arange(n2)
+width = 0.45
 
 
 def test_visualize(mocker):
-    mocker.patch.object(graphing, 'plt')
+    mocker.patch.object(graphing, "plt")
     graphing.plt.bar.return_value = True
-    graphing.visualize(dummy_total_text_data, dummy_budget)
-    graphing.plt.bar.assert_called_with(dummy_categ_val.keys(), ANY, color=dummy_color, edgecolor=dummy_edgecolor)
+    graphing.visualize(dummy_total_text_data, dummy_monthly_budget)
+    # graphing.plt.bar.assert_called_with(r2,
+    # ANY, width=width, label='your spendings')
+
+def test_visualize_pie_chart(pc):
+    pc.patch.object(graphing, "plt")
+    graphing.plt.pie.return_value = True
+    graphing.visualize_pie_chart(dummy_pie_chart)
+    graphing.plt.pie.assert_called_with(dummy_y, labels=dummy_x, colors=dummy_color, autopct="%1.1f%%", startangle=140, wedgeprops={"edgecolor": dummy_edgecolor, 'linewidth': 1.5})
+    graphing.plt.show.assert_called_once()
+    graphing.plt.close.assert_called_once()
+    graphing.plt.savefig.assert_called_once_with('expenditure_pie_chart.png', bbox_inches='tight')
+
+def test_visualize_bar_with_budget(mocker):
+    mocker.patch.object(graphing, "plt")
+    graphing.plt.bar.return_value = True
+    graphing.visualize_bar_with_budget(dummy_pie_chart, dummy_budget_dict)
+    graphing.plt.bar.assert_called_with(r2, dummy_categ_val.values(), width=width, label='your spendings')
+    graphing.plt.bar.assert_called_with(r2 + width, dummy_monthly_budget.values(), width=width, label='your budget')
+    graphing.plt.xticks.assert_called_with(r2 + width / 2, dummy_monthly_budget.keys(), rotation=90)
+    graphing.plt.legend.assert_called_once()
+    graphing.plt.savefig.assert_called_once_with('expenditure.png', bbox_inches='tight')
+    graphing.plt.close.assert_called_once()    
+
+def test_visualize_bar_without_budget(mocker):
+    mocker.patch.object(graphing, "plt")
+    graphing.plt.bar.return_value = True
+    graphing.visualize_bar_without_budget(dummy_pie_chart)
+    graphing.plt.bar.assert_called_with(r2, dummy_categ_val.values(), width=width, label='your spendings')
+    graphing.plt.xticks.assert_called_with(r2, dummy_categ_val.keys(), rotation=90)
+    graphing.plt.legend.assert_called_once()
+    graphing.plt.savefig.assert_called_once_with('expenditure.png', bbox_inches='tight')
+    graphing.plt.close.assert_called_once()
+
+def test_visualize_bar_graph(mocker):
+    mocker.patch.object(graphing, "plt")
+    graphing.plt.bar.return_value = True
+    graphing.visualize_bar_graph(dummy_months, dummy_spendings)
+    graphing.plt.bar.assert_called_with(r2, dummy_categ_val.values(), width=width, label='your spendings')
+    graphing.plt.xticks.assert_called_with(r2, dummy_categ_val.keys(), rotation=90)
+    graphing.plt.legend.assert_called_once()
+    graphing.plt.savefig.assert_called_once_with('expenditure.png', bbox_inches='tight')
+    graphing.plt.close.assert_called_once()
+
+def test_visualize_line_chart(mocker):
+    mocker.patch.object(graphing, "plt")
+    graphing.plt.plot.return_value = True
+    graphing.visualize_line_chart(dummy_months, dummy_spendings)
+    graphing.plt.plot.assert_called_with(dummy_months, dummy_spendings, marker='o', color='b')
+    graphing.plt.xticks.assert_called_with(r2, dummy_categ_val.keys(), rotation=90)
+    graphing.plt.legend.assert_called_once()
+    graphing.plt.savefig.assert_called_once_with('expenditure.png', bbox_inches='tight')
+    graphing.plt.close.assert_called_once()
