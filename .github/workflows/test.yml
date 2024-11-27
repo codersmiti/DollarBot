@@ -1,4 +1,4 @@
-name: Flask App CI
+name: Test Cases
 
 on: [push, pull_request]
 
