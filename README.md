@@ -21,7 +21,7 @@
 <hr>
 <p align="center">
 <a><img  height=280 width=480
-  src="./DollarBot.gif"
+  src="./ezgif.com-animated-gif-maker.gif""
      alt="Expense tracking made easy!"></a>
 </p>
 
