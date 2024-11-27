@@ -121,7 +121,7 @@ This bot has following functionalities:
 
 ## Demo
 
-[![Link to Demo](https://img.youtube.com/vi/E7EAHumVHhk/0.jpg)](https://www.youtube.com/watch?v=E7EAHumVHhk)
+[![Link to Demo](https://img.youtube.com/vi/E7EAHumVHhk/0.jpg)](https://drive.google.com/file/d/1wTuaoIfWi7yxiRPrmML1nKAnMM6I5MHb/view?usp=sharing)
 
 ## Techstack
 
