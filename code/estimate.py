@@ -141,4 +141,3 @@ def calculate_estimate(queryResult, days_to_estimate):
         estimated_avg = round(daily_avg * days_to_estimate, 2)
         total_text += str(key) + " $" + str(estimated_avg) + "\n"
     return total_text
-

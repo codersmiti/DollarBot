@@ -1,7 +1,9 @@
 import helper
 from telebot import types
 import history
+
 # === Documentation of delete_expense.py ===
+
 
 def run(m, bot):
     """
@@ -22,6 +24,7 @@ def run(m, bot):
     info = bot.reply_to(m, "Select expense to be deleted:", reply_markup=markup)
     bot.register_next_step_handler(info, select_category_to_be_deleted, bot)
 
+
 def select_category_to_be_deleted(m, bot):
     info = m.text
     markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
@@ -30,25 +33,24 @@ def select_category_to_be_deleted(m, bot):
     bot.register_next_step_handler(choice, delete_selected_data, bot, info)
 
 
-
 def delete_selected_data(message, bot, selected_data):
     chat_id = message.chat.id
     user_history = helper.getUserHistory(chat_id)
-    
+
     # Check if the user has selected any data
     if not selected_data:
         bot.send_message(chat_id, "No data selected for deletion.")
         return
-    
+
     if str(message.text) == "Y" or str(message.text) == "y":
         # Initialize a list to keep track of the deleted records
         deleted_records = []
-        
-        components = selected_data.split(',')
+
+        components = selected_data.split(",")
         formatted_data = []
 
         for component in components:
-            key, value = component.split('=')
+            key, value = component.split("=")
             value = value.strip()
 
             # Check if the component is the "Amount" and remove the '$' sign
@@ -57,14 +59,14 @@ def delete_selected_data(message, bot, selected_data):
 
             formatted_data.append(value)
 
-        formatted_string = ','.join(formatted_data)
-        
+        formatted_string = ",".join(formatted_data)
+
         # Compare each item in user_history with selected_data
         for expense_data in user_history:
             if formatted_string in expense_data:
                 user_history.remove(expense_data)
                 deleted_records.append(expense_data)
-        
+
         # Update the user's history
         user_list = helper.read_json()
         user_list[str(chat_id)]["data"] = user_history
@@ -73,7 +75,7 @@ def delete_selected_data(message, bot, selected_data):
         # Provide feedback to the user about the deleted records
         if deleted_records:
             bot.send_message(chat_id, "The following record has been deleted:")
-             # Create a tabular representation of the data
+            # Create a tabular representation of the data
             tabular_data = "```"
             tabular_data += "+-------------------+-------------------+-------------+\n"
             tabular_data += "|     DATE          |    CATEGORY       |   AMOUNT    |\n"
@@ -82,7 +84,9 @@ def delete_selected_data(message, bot, selected_data):
             for line in deleted_records:
                 rec = line.split(",")  # Assuming data is comma-separated
                 if len(rec) == 3:
-                    tabular_data += "| {:<15} | {:<17} | {:<11} |\n".format(rec[0], rec[1], rec[2])
+                    tabular_data += "| {:<15} | {:<17} | {:<11} |\n".format(
+                        rec[0], rec[1], rec[2]
+                    )
 
             tabular_data += "+-------------------+-------------------+-------------+"
             tabular_data += "```"
@@ -90,7 +94,9 @@ def delete_selected_data(message, bot, selected_data):
             # Send the tabular data as a Markdown-formatted message
             bot.send_message(chat_id, tabular_data, parse_mode="Markdown")
 
-            msg = bot.send_message(chat_id, "Do you want to see the updated expense history? Y/N")
+            msg = bot.send_message(
+                chat_id, "Do you want to see the updated expense history? Y/N"
+            )
             bot.register_next_step_handler(msg, show_updated_expense_history, bot)
 
         else:
@@ -98,9 +104,11 @@ def delete_selected_data(message, bot, selected_data):
     else:
         bot.send_message(chat_id, "No data deleted.")
 
+
 def show_updated_expense_history(message, bot):
     if str(message.text) == "Y" or str(message.text) == "y":
         history.run(message, bot)
+
 
 # function to delete a record
 def deleteHistory(chat_id):

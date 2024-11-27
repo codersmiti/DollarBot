@@ -2,6 +2,7 @@ from telebot import types
 import logging
 import helper
 
+
 def run(message, bot):
     chat_id = message.chat.id
     user_list = helper.read_json()
@@ -18,23 +19,29 @@ def run(message, bot):
     msg = bot.reply_to(message, "Select Budget Type", reply_markup=markup)
     bot.register_next_step_handler(msg, set_budget_type, bot, user_list)
 
+
 def set_budget_type(message, bot, user_list):
     try:
         chat_id = message.chat.id
         budget_type = message.text
         options = helper.getBudgetTypes()
-        
+
         if budget_type not in options.values():
-            bot.send_message(chat_id, "Invalid", reply_markup=types.ReplyKeyboardRemove())
-            raise Exception('Sorry I don\'t recognise this budget type "{}"!'.format(budget_type))
+            bot.send_message(
+                chat_id, "Invalid", reply_markup=types.ReplyKeyboardRemove()
+            )
+            raise Exception(
+                'Sorry I don\'t recognise this budget type "{}"!'.format(budget_type)
+            )
 
         if budget_type == options["overall"]:
             set_overall_budget(message, bot, user_list)
         elif budget_type == options["category"]:
             set_category_budget(message, bot, user_list)
-    
+
     except Exception as e:
         helper.throw_exception(e, message, bot, logging)
+
 
 def set_overall_budget(message, bot, user_list):
     chat_id = message.chat.id
@@ -42,12 +49,17 @@ def set_overall_budget(message, bot, user_list):
     if str(chat_id) not in user_list:
         bot.send_message(chat_id, "You don't have budget data to set.")
         return
-    
+
     try:
-        msg = bot.reply_to(message, "Enter the Overall Budget", reply_markup=types.ReplyKeyboardRemove())
+        msg = bot.reply_to(
+            message,
+            "Enter the Overall Budget",
+            reply_markup=types.ReplyKeyboardRemove(),
+        )
         bot.register_next_step_handler(msg, save_overall_budget, bot, user_list)
     except Exception as e:
         helper.throw_exception(e, message, bot, logging)
+
 
 def save_overall_budget(message, bot, user_list):
     chat_id = message.chat.id
@@ -65,7 +77,7 @@ def save_overall_budget(message, bot, user_list):
         # Ensure the 'budget' dictionary exists
         if "budget" not in user_list[str(chat_id)]:
             user_list[str(chat_id)]["budget"] = {"overall": None, "category": {}}
-        
+
         # Set the overall budget in the user's data
         user_list[str(chat_id)]["budget"]["overall"] = float(overall_budget)
 
@@ -75,13 +87,14 @@ def save_overall_budget(message, bot, user_list):
     except Exception as e:
         helper.throw_exception(e, message, bot, logging)
 
+
 def set_category_budget(message, bot, user_list):
     chat_id = message.chat.id
 
     if str(chat_id) not in user_list:
         bot.send_message(chat_id, "You don't have budget data to set.")
         return
-    
+
     try:
         categories = helper.getSpendCategories()
         markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
@@ -91,19 +104,29 @@ def set_category_budget(message, bot, user_list):
     except Exception as e:
         helper.throw_exception(e, message, bot, logging)
 
+
 def set_category_budget_amount(message, bot, user_list):
     chat_id = message.chat.id
     category = message.text
 
     if category not in helper.getSpendCategories():
-        bot.send_message(chat_id, "Invalid category.", reply_markup=types.ReplyKeyboardRemove())
+        bot.send_message(
+            chat_id, "Invalid category.", reply_markup=types.ReplyKeyboardRemove()
+        )
         return
-    
+
     try:
-        msg = bot.reply_to(message, f"Enter Budget for {category}", reply_markup=types.ReplyKeyboardRemove())
-        bot.register_next_step_handler(msg, save_category_budget, bot, user_list, category)
+        msg = bot.reply_to(
+            message,
+            f"Enter Budget for {category}",
+            reply_markup=types.ReplyKeyboardRemove(),
+        )
+        bot.register_next_step_handler(
+            msg, save_category_budget, bot, user_list, category
+        )
     except Exception as e:
         helper.throw_exception(e, message, bot, logging)
+
 
 def save_category_budget(message, bot, user_list, category):
     chat_id = message.chat.id
@@ -121,16 +144,18 @@ def save_category_budget(message, bot, user_list, category):
         # Ensure the 'budget' dictionary exists
         if "budget" not in user_list[str(chat_id)]:
             user_list[str(chat_id)]["budget"] = {"overall": None, "category": {}}
-        
+
         # Ensure the category budget dictionary exists
         if "category" not in user_list[str(chat_id)]["budget"]:
             user_list[str(chat_id)]["budget"]["category"] = {}
-        
+
         # Set the category budget in the user's data
         user_list[str(chat_id)]["budget"]["category"][category] = float(category_budget)
 
         helper.write_json(user_list)
 
-        bot.send_message(chat_id, f"Budget for {category} set to ${str(category_budget)}")
+        bot.send_message(
+            chat_id, f"Budget for {category} set to ${str(category_budget)}"
+        )
     except Exception as e:
         helper.throw_exception(e, message, bot, logging)

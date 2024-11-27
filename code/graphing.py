@@ -77,6 +77,7 @@ def visualize(total_text, monthly_budget):
     plt.savefig("expenditure.png", bbox_inches="tight")
     plt.close()
 
+
 def visualize_pie_chart(total_dict):
     """
     Generate a pie chart for the spending data from a dictionary input.
@@ -110,8 +111,12 @@ def visualize_bar_with_budget(total_dict, budget_dict):
     """
     # Ensure the values are numeric (float)
     categories = list(budget_dict.keys())
-    spending_values = [float(total_dict.get(category, 0)) for category in categories]  # Make sure values are float
-    budget_values = [float(budget_dict.get(category, 0)) for category in categories]  # Make sure values are float
+    spending_values = [
+        float(total_dict.get(category, 0)) for category in categories
+    ]  # Make sure values are float
+    budget_values = [
+        float(budget_dict.get(category, 0)) for category in categories
+    ]  # Make sure values are float
 
     # Check if there's any data to plot
     if not categories or not spending_values or not budget_values:
@@ -121,7 +126,9 @@ def visualize_bar_with_budget(total_dict, budget_dict):
     x = np.arange(len(categories))
 
     plt.figure(figsize=(10, 6))
-    plt.bar(x - width / 2, spending_values, width, label="Your Spendings", color="skyblue")
+    plt.bar(
+        x - width / 2, spending_values, width, label="Your Spendings", color="skyblue"
+    )
     plt.bar(x + width / 2, budget_values, width, label="Your Budget", color="orange")
     plt.ylabel("Amount ($)")
     plt.xlabel("Categories")
@@ -155,6 +162,7 @@ def visualize_bar_without_budget(total_dict):
     plt.savefig("expenditure.png", bbox_inches="tight")
     plt.close()
 
+
 def visualize_bar_graph(months, spending_values):
     """
     Visualize monthly expenses comparison using a bar chart.
@@ -172,7 +180,8 @@ def visualize_bar_graph(months, spending_values):
     plt.tight_layout()
     plt.savefig("expenditure.png", bbox_inches="tight")
     plt.close()
-    
+
+
 def visualize_line_chart(months, spending_values):
     """
     Visualize monthly expenses trend using a line chart.
@@ -180,8 +189,10 @@ def visualize_line_chart(months, spending_values):
     spending_values: List of total spending amounts for each month
     """
     plt.figure(figsize=(10, 6))
-    plt.plot(months, spending_values, marker='o', color='skyblue', label="Monthly Expenses")
-    
+    plt.plot(
+        months, spending_values, marker="o", color="skyblue", label="Monthly Expenses"
+    )
+
     plt.ylabel("Amount ($)")
     plt.xlabel("Month")
     plt.title("Monthly Expenses Trend")

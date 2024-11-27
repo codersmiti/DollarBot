@@ -8,27 +8,31 @@ from collections import defaultdict
 
 API_URL = "https://api.exchangerate-api.com/v4/latest/"
 
+
 def run(message, bot):
     """
     Command: /convert <amount> <from_currency> <to_currency>
     Example: /convert 100 USD EUR
     """
-    
+
     try:
         chat_id = message.chat.id
         text = message.text.split()
-        
+
         if len(text) != 4:
-            bot.send_message(chat_id, "Usage: /convert <amount> <from_currency> <to_currency>")
+            bot.send_message(
+                chat_id, "Usage: /convert <amount> <from_currency> <to_currency>"
+            )
             return
-        
+
         _, amount, from_currency, to_currency = text
         from currency_converter import convert_currency
-        
+
         result = convert_currency(amount, from_currency.upper(), to_currency.upper())
         bot.send_message(chat_id, result)
     except Exception as e:
         bot.send_message(message.chat.id, str(e))
+
 
 def convert_currency(amount, from_currency, to_currency):
     try:
@@ -36,7 +40,9 @@ def convert_currency(amount, from_currency, to_currency):
         data = response.json()
 
         if "rates" not in data:
-            return "Unable to fetch exchange rates at the moment. Please try again later."
+            return (
+                "Unable to fetch exchange rates at the moment. Please try again later."
+            )
 
         rates = data["rates"]
         if to_currency not in rates:

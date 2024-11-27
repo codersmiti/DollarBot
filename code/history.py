@@ -2,6 +2,7 @@ import helper
 import logging
 import csv
 from io import StringIO
+
 # === Documentation of history.py ===
 
 
@@ -34,7 +35,9 @@ def run(message, bot):
             for line in user_history:
                 rec = line.split(",")  # Assuming data is comma-separated
                 if len(rec) == 3:
-                    tabular_data += "| {:<15} | {:<17} | {:<11} |\n".format(rec[0], rec[1], rec[2])
+                    tabular_data += "| {:<15} | {:<17} | {:<11} |\n".format(
+                        rec[0], rec[1], rec[2]
+                    )
 
             tabular_data += "+-------------------+-------------------+-------------+"
             tabular_data += ""

@@ -3,16 +3,13 @@ from unittest.mock import patch, MagicMock
 import requests
 from code.currency_converter import convert_currency, run
 
+
 class TestCurrencyConverter(unittest.TestCase):
     @patch("requests.get")
     def test_convert_currency_success(self, mock_get):
         # Mock API response
         mock_response = MagicMock()
-        mock_response.json.return_value = {
-            "rates": {
-                "EUR": 0.85
-            }
-        }
+        mock_response.json.return_value = {"rates": {"EUR": 0.85}}
         mock_get.return_value = mock_response
 
         result = convert_currency(100, "USD", "EUR")
@@ -22,11 +19,7 @@ class TestCurrencyConverter(unittest.TestCase):
     def test_convert_currency_unsupported_currency(self, mock_get):
         # Mock API response
         mock_response = MagicMock()
-        mock_response.json.return_value = {
-            "rates": {
-                "EUR": 0.85
-            }
-        }
+        mock_response.json.return_value = {"rates": {"EUR": 0.85}}
         mock_get.return_value = mock_response
 
         result = convert_currency(100, "USD", "XYZ")
@@ -47,7 +40,9 @@ class TestCurrencyConverter(unittest.TestCase):
         mock_message.text = "/convert 100"
 
         run(mock_message, mock_bot)
-        mock_bot.send_message.assert_called_with(12345, "Usage: /convert <amount> <from_currency> <to_currency>")
+        mock_bot.send_message.assert_called_with(
+            12345, "Usage: /convert <amount> <from_currency> <to_currency>"
+        )
 
     @patch("your_module.convert_currency")
     def test_run_valid_command(self, mock_convert_currency):

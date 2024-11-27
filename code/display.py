@@ -16,8 +16,8 @@ def run(message, bot):
     It takes 2 arguments for processing - message which is the message from the user, and bot
     which is the telegram bot object from the main code.py function.
     """
-    user_list=helper.read_json()
-    print('###',user_list)
+    user_list = helper.read_json()
+    print("###", user_list)
     chat_id = message.chat.id
     print(chat_id)
     history = helper.getUserHistory(chat_id)
@@ -29,41 +29,46 @@ def run(message, bot):
         markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
         markup.add("Display all expenses")
         markup.add("Display owings")
-        m = bot.send_message(chat_id, "Select what to display",reply_markup=markup)
-        bot.register_next_step_handler(m, display_choice, bot,user_list,chat_id)
+        m = bot.send_message(chat_id, "Select what to display", reply_markup=markup)
+        bot.register_next_step_handler(m, display_choice, bot, user_list, chat_id)
 
 
-def display_choice(message,bot,user_list,chat_id):
+def display_choice(message, bot, user_list, chat_id):
     chat_id = message.chat.id
     choice = message.text
-    if choice == 'Display all expenses':
-        display_expenses(message,bot)
-    elif choice =='Display owings':
-         display_owings(message,bot,user_list,chat_id)
+    if choice == "Display all expenses":
+        display_expenses(message, bot)
+    elif choice == "Display owings":
+        display_owings(message, bot, user_list, chat_id)
     else:
         m = bot.send_message(chat_id, "Select correct choice")
         bot.register_next_step_handler(m, run, bot)
 
-def display_owings(message,bot,user_list,chat_id):
-        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
-        markup.row_width = len(user_list[str(chat_id)]["users"])
-        for c in user_list[str(chat_id)]["users"]:
-                markup.add(c)
-        m = bot.send_message(chat_id, "Select user who's owings you want to display",reply_markup=markup)
-        bot.register_next_step_handler(m, select_user, bot,user_list,chat_id)
 
-def select_user(message,bot,user_list,chat_id):
+def display_owings(message, bot, user_list, chat_id):
+    markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
+    markup.row_width = len(user_list[str(chat_id)]["users"])
+    for c in user_list[str(chat_id)]["users"]:
+        markup.add(c)
+    m = bot.send_message(
+        chat_id, "Select user who's owings you want to display", reply_markup=markup
+    )
+    bot.register_next_step_handler(m, select_user, bot, user_list, chat_id)
+
+
+def select_user(message, bot, user_list, chat_id):
     chat_id = message.chat.id
     user = message.text
-    owing_dictionary = helper.calculate_owing(user_list,chat_id)
-    final_string = ''
+    owing_dictionary = helper.calculate_owing(user_list, chat_id)
+    final_string = ""
     for owed in owing_dictionary[user]["owes"]:
-            final_string+=str("\n "+owed)
+        final_string += str("\n " + owed)
     for owing in owing_dictionary[user]["owing"]:
-            final_string+=str("\n "+owing)
-    if final_string == '':
-        final_string = str(user)+' owes or is owed nothing'
+        final_string += str("\n " + owing)
+    if final_string == "":
+        final_string = str(user) + " owes or is owed nothing"
     m = bot.send_message(chat_id, final_string)
+
 
 def display_expenses(message, bot):
     markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
@@ -77,6 +82,7 @@ def display_expenses(message, bot):
         reply_markup=markup,
     )
     bot.register_next_step_handler(msg, display_total, bot)
+
 
 def display_total(message, bot):
     """
@@ -120,7 +126,7 @@ def display_total(message, bot):
                 value for index, value in enumerate(history) if str(query) in value
             ]
         total_text = calculate_spendings(queryResult)
-        print("###########",total_text)
+        print("###########", total_text)
         monthly_budget = helper.getCategoryBudget(chat_id)
         if monthly_budget == None:
             message = "Looks like you have not entered any category-wise budget yet. Please enter your budget and then try to display the expenses."
@@ -129,7 +135,7 @@ def display_total(message, bot):
             display_text = ""
             commands = helper.getCommands()
             for (
-            c
+                c
             ) in (
                 commands
             ):  # generate help text out of the commands dictionary defined at the top
@@ -157,12 +163,19 @@ def display_total(message, bot):
         logging.exception(str(e))
         bot.reply_to(message, str(e))
 
+
 def display_visualization_options(message, bot, queryResult, DayWeekMonth):
     """
     Display visualization options for the user.
     """
     markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
-    options = ["Pie Chart", "Bar Graph with Budget", "Bar Graph without Budget","Monthly Comparisions(Bar Graph)","Monthly Comparisions(Line Chart)"]
+    options = [
+        "Pie Chart",
+        "Bar Graph with Budget",
+        "Bar Graph without Budget",
+        "Monthly Comparisions(Bar Graph)",
+        "Monthly Comparisions(Line Chart)",
+    ]
     for option in options:
         markup.add(option)
 
@@ -175,14 +188,14 @@ def display_visualization_options(message, bot, queryResult, DayWeekMonth):
         msg, generate_visualization, bot, queryResult, DayWeekMonth
     )
 
+
 def generate_visualization(message, bot, queryResult, DayWeekMonth):
     """
     Generate the requested visualization and send it to the user.
     """
     chat_id = message.chat.id
     visualization_type = message.text
-    
-    
+
     history = helper.getUserHistory(chat_id)
     if history is None:
         raise Exception("Oops! Looks like you do not have any spending records!")
@@ -195,9 +208,7 @@ def generate_visualization(message, bot, queryResult, DayWeekMonth):
             "Monthly Comparisions(Bar Graph)",
             "Monthly Comparisions(Line Chart)",
         ]:
-            bot.send_message(
-                chat_id, "Invalid option selected. Please try again."
-            )
+            bot.send_message(chat_id, "Invalid option selected. Please try again.")
             return
 
         total_text = calculate_spendings(queryResult)
@@ -208,7 +219,7 @@ def generate_visualization(message, bot, queryResult, DayWeekMonth):
 
         monthly_spendings = calculate_monthly_spendings(history)
         months, spending_values = prepare_monthly_data(monthly_spendings)
-        
+
         # Handle visualization types
         if visualization_type == "Pie Chart":
             graphing.visualize_pie_chart(spending_dict)
@@ -226,45 +237,53 @@ def generate_visualization(message, bot, queryResult, DayWeekMonth):
 
         elif visualization_type == "Monthly Comparisions(Bar Graph)":
             graphing.visualize_bar_graph(months, spending_values)
-            
+
         elif visualization_type == "Monthly Comparisions(Line Chart)":
-            graphing.visualize_line_chart(months, spending_values) 
+            graphing.visualize_line_chart(months, spending_values)
         # Send the generated visualization
         bot.send_photo(chat_id, photo=open("expenditure.png", "rb"))
-        #os.remove("expenditure.png")
+        # os.remove("expenditure.png")
 
     except Exception as e:
         logging.exception(str(e))
         bot.reply_to(message, str(e))
+
+
 from datetime import datetime
 from collections import defaultdict
+
 
 def calculate_monthly_spendings(queryResult):
     """
     Groups expenses by month (and year) and calculates total spendings per month.
     queryResult: List of expense records (e.g., ['21-Nov-2024,Food,100.0', ...])
     """
-    monthly_spendings = defaultdict(float)  # Default dictionary to accumulate totals by month
+    monthly_spendings = defaultdict(
+        float
+    )  # Default dictionary to accumulate totals by month
 
     for row in queryResult:
         # Example row format: '21-Nov-2024,Food,100.0'
         date_str, category, amount = row.split(",")
         date = datetime.strptime(date_str, "%d-%b-%Y %H:%M")  # Parse date and time
-  
+
         month_year = date.strftime("%b-%Y")  # Format as 'Nov-2024'
-        
+
         # Accumulate total spending for each month
         monthly_spendings[month_year] += float(amount)
 
     return monthly_spendings
 
+
 def prepare_monthly_data(monthly_spendings):
     """
     Prepare the data for plotting by extracting months and total spending amounts.
     """
-    months = list(monthly_spendings.keys())  # List of months (e.g., 'Nov-2024', 'Dec-2024')
+    months = list(
+        monthly_spendings.keys()
+    )  # List of months (e.g., 'Nov-2024', 'Dec-2024')
     spending_values = list(monthly_spendings.values())  # Corresponding spending values
-    
+
     return months, spending_values
 
 
@@ -274,9 +293,9 @@ def calculate_spendings(queryResult):
     which is the query result from the display total function in the same file.
     It parses the query result and turns it into a form suitable for display on the UI by the user.
     """
-    
+
     total_dict = {}
-    print("!!!!!!",queryResult)
+    print("!!!!!!", queryResult)
     for row in queryResult:
         # date,cat,money
         s = row.split(",")

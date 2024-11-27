@@ -16,7 +16,7 @@ def run(message, bot):
     delete_history_text = ""
     user_list = helper.read_json()
     if str(chat_id) in user_list:
-        helper.write_json(deleteHistory(chat_id,user_list))
+        helper.write_json(deleteHistory(chat_id, user_list))
         delete_history_text = "History has been deleted!"
     else:
         delete_history_text = "No records there to be deleted. Start adding your expenses to keep track of your spendings!"
@@ -24,7 +24,7 @@ def run(message, bot):
 
 
 # function to delete a record
-def deleteHistory(chat_id,user_list):
+def deleteHistory(chat_id, user_list):
     """
     deleteHistory(chat_id): It takes 1 argument for processing - chat_id which is the
     chat_id of the user whose data is to deleted from the user list. It removes this entry from the user list.

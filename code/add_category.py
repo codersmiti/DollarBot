@@ -2,7 +2,6 @@ import helper
 from telebot import types
 
 
-
 option = {}
 
 # === Documentation of add.py ===
@@ -24,6 +23,7 @@ def run(message, bot):
     message1 = bot.send_message(chat_id, "Please enter your category")
     bot.register_next_step_handler(message1, post_append_spend, bot)
 
+
 def post_append_spend(message, bot):
     chat_id = message.chat.id
     markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
@@ -39,13 +39,11 @@ def post_append_spend(message, bot):
     else:
         helper.spend_categories.append(selected_category)
         user_list = helper.read_json()
-        user_list[str(chat_id)]["budget"]["category"][selected_category] = '0'
+        user_list[str(chat_id)]["budget"]["category"][selected_category] = "0"
         helper.write_json(user_list)
         for c in helper.getSpendCategories():
             markup.add(c)
         bot.send_message(
-                chat_id,
-                "The following category has been added: {} ".format(
-                    selected_category
-                ),
-            )
+            chat_id,
+            "The following category has been added: {} ".format(selected_category),
+        )

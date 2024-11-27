@@ -5,7 +5,8 @@ from datetime import datetime
 import cv2
 
 import re
-#pytesseract.pytesseract.tesseract_cmd = r' c:\\users\\vedan\\appdata\\roamin\\python\\python312\site-packages'
+
+# pytesseract.pytesseract.tesseract_cmd = r' c:\\users\\vedan\\appdata\\roamin\\python\\python312\site-packages'
 
 import requests
 import copy
@@ -13,7 +14,7 @@ import copy
 from typing import Dict
 from google.cloud import vision
 
-#import random
+# import random
 import numpy as np
 
 import os
@@ -47,28 +48,30 @@ def run(message, bot):
     It takes 2 arguments for processing - message which is the message from the user,
     and bot which is the telegram bot object from the main code.py function.
     """
-    user_list=helper.read_json()
+    user_list = helper.read_json()
     chat_id = message.chat.id
-    owed_by =[]
+    owed_by = []
     # option.pop(chat_id, None)  # remove temp choice
 
     if str(chat_id) not in user_list:
         user_list[str(chat_id)] = helper.createNewUserRecord(message)
-        
+
     markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
     markup.row_width = 2
     markup.add("Upload Image", "Enter Manually")
-    
-    
+
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "temp_credentials.json"
 
     # Verify it's set correctly (optional)
-    print(f"GOOGLE_APPLICATION_CREDENTIALS set to: {os.environ['GOOGLE_APPLICATION_CREDENTIALS']}")
-    
+    print(
+        f"GOOGLE_APPLICATION_CREDENTIALS set to: {os.environ['GOOGLE_APPLICATION_CREDENTIALS']}"
+    )
+
     m = bot.send_message(
         chat_id, "How would you like to add your expense?", reply_markup=markup
     )
     bot.register_next_step_handler(m, handle_expense_method, bot, user_list, owed_by)
+
 
 def handle_expense_method(message, bot, user_list, owed_by):
     """
@@ -79,19 +82,23 @@ def handle_expense_method(message, bot, user_list, owed_by):
 
     if choice == "Upload Image":
         bot.send_message(chat_id, "Please upload an image of your bill.")
-        bot.register_next_step_handler(message, process_bill_image, bot,user_list,owed_by)
+        bot.register_next_step_handler(
+            message, process_bill_image, bot, user_list, owed_by
+        )
     elif choice == "Enter Manually":
         print("Hello")
         markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
         markup.row_width = len(user_list[str(chat_id)]["users"])
         for c in user_list[str(chat_id)]["users"]:
             markup.add(c)
-        m = bot.send_message(chat_id, "Select who paid for the Expense",reply_markup=markup)
-        bot.register_next_step_handler(m, select_user, bot,owed_by,user_list,None)
+        m = bot.send_message(
+            chat_id, "Select who paid for the Expense", reply_markup=markup
+        )
+        bot.register_next_step_handler(m, select_user, bot, owed_by, user_list, None)
     else:
         bot.send_message(chat_id, "Invalid choice. Please try again.")
         run(message, bot)
-        
+
 
 def extract_total_from_image_with_vision(image_path):
     """Extract the total amount from a receipt image using Google Vision API."""
@@ -111,8 +118,12 @@ def extract_total_from_image_with_vision(image_path):
         return None, "No text detected on the receipt."
 
     # Full text detection
-    detected_text = texts[0].description.splitlines()  # Split into lines for easier parsing
-    print("Detected Text:\n", "\n".join(detected_text))  # Print detected text for verification
+    detected_text = texts[
+        0
+    ].description.splitlines()  # Split into lines for easier parsing
+    print(
+        "Detected Text:\n", "\n".join(detected_text)
+    )  # Print detected text for verification
 
     # Extract total amount using regex
     total_amount = extract_total_amount(detected_text)
@@ -120,6 +131,7 @@ def extract_total_from_image_with_vision(image_path):
         return total_amount, "Total amount extracted successfully."
     else:
         return None, "Unable to detect the total amount on the receipt."
+
 
 def extract_total_amount(detected_text):
     """Find total sum using regex."""
@@ -131,22 +143,19 @@ def extract_total_amount(detected_text):
         text = entry.lower()
 
         # Check if 'total' is found, and ensure that it matches "TOTAL"
-        if 'total' in text and 'subtotal' not in text:  # Avoid matching "subtotal"
+        if "total" in text and "subtotal" not in text:  # Avoid matching "subtotal"
             if i + 1 < len(detected_text):
                 next_text = detected_text[i + 1].strip()  # Clean up whitespace
 
                 # Look for numeric values or currency patterns in the next entry (after "TOTAL")
-                numeric_values = re.findall(r'\$?\s*(\d+(?:,\d{3})*(?:\.\d{2})?)', next_text)
+                numeric_values = re.findall(
+                    r"\$?\s*(\d+(?:,\d{3})*(?:\.\d{2})?)", next_text
+                )
                 if numeric_values:
                     total_amount = numeric_values[0]
                     break  # Stop after finding the total amount
 
     return total_amount
-
-
-
-
-
 
 
 def process_bill_image(message, bot, user_list, owed_by):
@@ -160,15 +169,15 @@ def process_bill_image(message, bot, user_list, owed_by):
         file_info = bot.get_file(message.photo[-1].file_id)
         downloaded_file = bot.download_file(file_info.file_path)
         image_path = f"bill_{chat_id}.jpg"
-        
-        with open(image_path, 'wb') as f:
+
+        with open(image_path, "wb") as f:
             f.write(downloaded_file)
-        
-        #image = None
-        #parsed_answer_obtained1 = extract_text_from_images(image)
+
+        # image = None
+        # parsed_answer_obtained1 = extract_text_from_images(image)
         # Extract total amount from the image
-        #total_amount = extract_total_amount(parsed_answer_obtained1)
-        
+        # total_amount = extract_total_amount(parsed_answer_obtained1)
+
         total_amount = extract_total_from_image_with_vision(image_path)
         print("Hello")
         print(total_amount[0])
@@ -177,17 +186,20 @@ def process_bill_image(message, bot, user_list, owed_by):
             msg = bot.send_message(
                 chat_id,
                 f"The total amount detected from the bill is **${total_amount}**. "
-                "If this is correct, reply with 'Y'. Otherwise, enter the correct amount."
+                "If this is correct, reply with 'Y'. Otherwise, enter the correct amount.",
             )
-            bot.register_next_step_handler(msg, handle_extracted_amount, bot, user_list, owed_by, total_amount[0])
+            bot.register_next_step_handler(
+                msg, handle_extracted_amount, bot, user_list, owed_by, total_amount[0]
+            )
         else:
-            bot.send_message(chat_id, "Sorry, I couldn't detect the total amount. Please try again.")
+            bot.send_message(
+                chat_id, "Sorry, I couldn't detect the total amount. Please try again."
+            )
     except Exception as e:
-        bot.send_message(chat_id, "An error occurred while processing the image. Please try again.")
+        bot.send_message(
+            chat_id, "An error occurred while processing the image. Please try again."
+        )
         logging.exception(str(e))
-
-
-
 
 
 def handle_extracted_amount(message, bot, user_list, owed_by, extracted_amount):
@@ -199,7 +211,7 @@ def handle_extracted_amount(message, bot, user_list, owed_by, extracted_amount):
 
     try:
         # If user confirms (Y), proceed with the detected amount
-        if user_response.lower() in ['y', 'yes']:
+        if user_response.lower() in ["y", "yes"]:
             amount = extracted_amount
         else:
             # Validate the entered amount
@@ -211,20 +223,25 @@ def handle_extracted_amount(message, bot, user_list, owed_by, extracted_amount):
         markup.row_width = len(user_list[str(chat_id)]["users"])
         for c in user_list[str(chat_id)]["users"]:
             markup.add(c)
-        m = bot.send_message(chat_id, "Select who paid for the Expense", reply_markup=markup)
-        bot.register_next_step_handler(m, select_user, bot, owed_by, user_list, None,amount)
+        m = bot.send_message(
+            chat_id, "Select who paid for the Expense", reply_markup=markup
+        )
+        bot.register_next_step_handler(
+            m, select_user, bot, owed_by, user_list, None, amount
+        )
     except Exception as e:
         bot.send_message(chat_id, "Invalid amount entered. Please try again.")
         logging.exception(str(e))
 
 
-
-def select_user(message,bot,owed_by,user_list,paid_by,total_amount):
+def select_user(message, bot, owed_by, user_list, paid_by, total_amount):
     chat_id = message.chat.id
     text_m = message.text
-    remaining_users = [item for item in user_list[str(chat_id)]["users"] if item not in owed_by]
-    if len(remaining_users)==0:
-        post_append_spend(message,bot,owed_by,user_list,paid_by)
+    remaining_users = [
+        item for item in user_list[str(chat_id)]["users"] if item not in owed_by
+    ]
+    if len(remaining_users) == 0:
+        post_append_spend(message, bot, owed_by, user_list, paid_by)
     else:
         if text_m in user_list[str(chat_id)]["users"]:
             paid_by = text_m
@@ -233,29 +250,38 @@ def select_user(message,bot,owed_by,user_list,paid_by,total_amount):
 
         for c in remaining_users:
             markup.add(c)
-        m = bot.send_message(chat_id, "Select who shares the Expense",reply_markup=markup)
-        bot.register_next_step_handler(m, add_shared_user, bot,owed_by,user_list,paid_by,total_amount)
+        m = bot.send_message(
+            chat_id, "Select who shares the Expense", reply_markup=markup
+        )
+        bot.register_next_step_handler(
+            m, add_shared_user, bot, owed_by, user_list, paid_by, total_amount
+        )
 
-def add_shared_user(message,bot,owed_by,user_list,paid_by,total_amount):
+
+def add_shared_user(message, bot, owed_by, user_list, paid_by, total_amount):
     chat_id = message.chat.id
     user = message.text
     if user in user_list[str(chat_id)]["users"]:
         owed_by.append(user)
     else:
         pass
-    choice = bot.reply_to(message, "Do you want to add more user to share the expense? Y/N")
-    bot.register_next_step_handler(choice, user_choice, bot, owed_by,user_list,paid_by,total_amount)
-    
-def user_choice(message, bot,owed_by, user_list,paid_by,total_amount):
+    choice = bot.reply_to(
+        message, "Do you want to add more user to share the expense? Y/N"
+    )
+    bot.register_next_step_handler(
+        choice, user_choice, bot, owed_by, user_list, paid_by, total_amount
+    )
+
+
+def user_choice(message, bot, owed_by, user_list, paid_by, total_amount):
     Choice = message.text
-    if Choice == "Y" or Choice == 'y':
-        select_user(message,bot,owed_by,user_list,paid_by)
-    elif Choice == "N" or Choice == 'n':
-        post_append_spend(message,bot,owed_by,user_list,paid_by,total_amount)
+    if Choice == "Y" or Choice == "y":
+        select_user(message, bot, owed_by, user_list, paid_by)
+    elif Choice == "N" or Choice == "n":
+        post_append_spend(message, bot, owed_by, user_list, paid_by, total_amount)
 
 
-
-def post_append_spend(message, bot,owed_by,user_list,paid_by,total_amount):
+def post_append_spend(message, bot, owed_by, user_list, paid_by, total_amount):
     chat_id = message.chat.id
     markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
     markup.row_width = 2
@@ -263,14 +289,16 @@ def post_append_spend(message, bot,owed_by,user_list,paid_by,total_amount):
     for c in helper.getSpendCategories():
         markup.add(c)
     msg = bot.reply_to(message, "Select Category", reply_markup=markup)
-    bot.register_next_step_handler(msg, post_category_selection, bot,owed_by,paid_by,user_list,total_amount)
+    bot.register_next_step_handler(
+        msg, post_category_selection, bot, owed_by, paid_by, user_list, total_amount
+    )
 
 
-def post_category_selection(message, bot,owed_by,paid_by,user_list,total_amount):
+def post_category_selection(message, bot, owed_by, paid_by, user_list, total_amount):
     """
     post_category_selection(message, bot): It takes 2 arguments for processing -
     message which is the message from the user, and bot which is the telegram bot object
-    from the run(message, bot): function in the add.py file. It requests the user 
+    from the run(message, bot): function in the add.py file. It requests the user
     to enter the amount they have spent on the expense category chosen and then passes
     control to post_amount_input(message, bot): for further processing.
     """
@@ -289,12 +317,18 @@ def post_category_selection(message, bot,owed_by,paid_by,user_list,total_amount)
         if total_amount == None:
             message = bot.send_message(
                 chat_id,
-                    "How much did you spend on {}? \n(Enter numeric values only)".format(
+                "How much did you spend on {}? \n(Enter numeric values only)".format(
                     str(option[chat_id])
                 ),
             )
             bot.register_next_step_handler(
-            message, post_amount_input, bot, selected_category,owed_by,paid_by,user_list
+                message,
+                post_amount_input,
+                bot,
+                selected_category,
+                owed_by,
+                paid_by,
+                user_list,
             )
         else:
             date_of_entry = datetime.today().strftime(
@@ -309,7 +343,13 @@ def post_category_selection(message, bot,owed_by,paid_by,user_list,total_amount)
 
             helper.write_json(
                 add_user_record(
-                    user_list,message,chat_id, "{},{},{}".format(date_str, category_str, amount_str),total_amount,owed_by,paid_by
+                    user_list,
+                    message,
+                    chat_id,
+                    "{},{},{}".format(date_str, category_str, amount_str),
+                    total_amount,
+                    owed_by,
+                    paid_by,
                 )
             )
 
@@ -318,10 +358,8 @@ def post_category_selection(message, bot,owed_by,paid_by,user_list,total_amount)
                 "The following expenditure has been recorded: You have spent ${} for {} on {}".format(
                     amount_str, category_str, date_str
                 ),
-            )          
-            
-            
-        
+            )
+
     except Exception as e:
         logging.exception(str(e))
         bot.reply_to(message, "Oh no! " + str(e))
@@ -338,7 +376,15 @@ def post_category_selection(message, bot,owed_by,paid_by,user_list,total_amount)
         bot.send_message(chat_id, display_text)
 
 
-def post_amount_input(message, bot, selected_category,owed_by,paid_by,user_list,auto_filled_amount = None):
+def post_amount_input(
+    message,
+    bot,
+    selected_category,
+    owed_by,
+    paid_by,
+    user_list,
+    auto_filled_amount=None,
+):
     """
     post_amount_input(message, bot): It takes 2 arguments for processing -
     message which is the message from the user, and bot which is the telegram bot
@@ -352,8 +398,8 @@ def post_amount_input(message, bot, selected_category,owed_by,paid_by,user_list,
             amount_value = auto_filled_amount
         else:
             amount_entered = message.text
-            amount_value = helper.validate_entered_amount(amount_entered) 
-       
+            amount_value = helper.validate_entered_amount(amount_entered)
+
         if amount_value == 0:  # cannot be $0 spending
             raise Exception("Spent amount has to be a non-zero number.")
 
@@ -369,7 +415,13 @@ def post_amount_input(message, bot, selected_category,owed_by,paid_by,user_list,
 
         helper.write_json(
             add_user_record(
-                user_list,message,chat_id, "{},{},{}".format(date_str, category_str, amount_str),amount_value,owed_by,paid_by
+                user_list,
+                message,
+                chat_id,
+                "{},{},{}".format(date_str, category_str, amount_str),
+                amount_value,
+                owed_by,
+                paid_by,
             )
         )
 
@@ -384,7 +436,9 @@ def post_amount_input(message, bot, selected_category,owed_by,paid_by,user_list,
         bot.reply_to(message, "Oh no. " + str(e))
 
 
-def add_user_record(user_list,message,chat_id, record_to_be_added,amount_value,owed_by, paid_by):
+def add_user_record(
+    user_list, message, chat_id, record_to_be_added, amount_value, owed_by, paid_by
+):
     """
     add_user_record(chat_id, record_to_be_added): Takes 2 arguments -
     chat_id or the chat_id of the user's chat, and record_to_be_added which
@@ -392,7 +446,7 @@ def add_user_record(user_list,message,chat_id, record_to_be_added,amount_value,o
     """
     if str(chat_id) not in user_list:
         user_list[str(chat_id)] = helper.createNewUserRecord(message)
-    owed_amount = float(amount_value)/len(set(owed_by))
+    owed_amount = float(amount_value) / len(set(owed_by))
     if "data" in user_list[str(chat_id)]:
         user_list[str(chat_id)]["data"].append(record_to_be_added)
     else:
@@ -405,7 +459,7 @@ def add_user_record(user_list,message,chat_id, record_to_be_added,amount_value,o
             user_list[str(chat_id)]["owing"][user][paid_by] += owed_amount
         else:
             user_list[str(chat_id)]["owing"][user][paid_by] = owed_amount
-    record_to_be_added+=",{},{}".format(paid_by,' & '.join(owed_by))
+    record_to_be_added += ",{},{}".format(paid_by, " & ".join(owed_by))
     if "csv_data" in user_list[str(chat_id)]:
         user_list[str(chat_id)]["csv_data"].append(record_to_be_added)
     else:
