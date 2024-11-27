@@ -208,22 +208,6 @@ coverage run -m pytest test/
 coverage report
 ```
 
-## Usage
-
-We have tried to make this application (bot) as easy as possible. You can use this bot to manage and track you daily expenses and not worry about loosing track of your expenses. As we also have given in a functionality of graphing and plotting and history of expenses, it becomes easy for the user to track expenses.
-To make your experience even better, we have added User Tutorials for all the basic operations you can perform with DollarBot!!
-Here you go:
-- [Learn to add Balance!!](https://github.com/r-kala/DollarBot/blob/main/docs/UserTutorialDocuments/AddBalanceTutorial.md)
-- [Learn to add Expenses!!](https://github.com/ymdatta/DollarBot/blob/main/docs/UserTutorialDocuments/AddExpenseTutorial.md)
-- [Learn to add Recurring Expenses!!](https://github.com/ymdatta/DollarBot/blob/main/docs/UserTutorialDocuments/AddRecurringExpenseTutorial.md)
-- [Learn to display Expense Data with Graphs!!](https://github.com/ymdatta/DollarBot/blob/main/docs/UserTutorialDocuments/DisplayTutorial.md)
-- [Learn to download Expense History Data as CSV!!](https://github.com/ymdatta/DollarBot/blob/main/docs/UserTutorialDocuments/DownloadCSV.md)
-- [Learn to get detailed Expense Data via Email!!](https://github.com/ymdatta/DollarBot/blob/main/docs/UserTutorialDocuments/EmailSpendingTutorial.md)
-- [Learn to estimate your future daily/monthly Expenses!!](https://github.com/ymdatta/DollarBot/blob/main/docs/UserTutorialDocuments/EstimateExpenseTutorial.md)
-- [Learn to access your detailed Expense History!!](https://github.com/ymdatta/DollarBot/blob/main/docs/UserTutorialDocuments/ExpenseHistory.md)
-- [Learn to set Expense Reminders!!](https://github.com/ymdatta/DollarBot/blob/main/docs/UserTutorialDocuments/SetReminderTutorial.md)
-
-Link to feedback on DollarBot usage from users: [DollarBot Feedback Details](https://docs.google.com/document/d/1-2Ymohz238M43vACZSaMJzciNv_69CRBKFgrELbd-Bg/edit)
 
 ## Configuration
 
@@ -292,9 +276,7 @@ As a contributor, we have tried to make the system as decoupled as possible so t
 - [ ] Improve User Interface design.
 - [ ] Adding normal conversational abilities to the chatbot.
 
-
- ### Link to Project Board: [DollarBot Project Board](https://github.com/users/ymdatta/projects/3)
-
+ 
 ## Contributing
 
 Thank you for your interest in contributing to DollarBot! Your contributions are highly valued, and this document will help you get started with the process.
