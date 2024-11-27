@@ -1,19 +1,15 @@
 <hr>
 
-[![DOI](https://zenodo.org/badge/894631395.svg)](https://doi.org/10.5281/zenodo.14225916)
-![MIT license](https://img.shields.io/badge/License-MIT-green.svg)
-![GitHub](https://img.shields.io/badge/Language-Python-blue.svg)
-![Style Checker](https://github.com/ymdatta/DollarBot/actions/workflows/styleChecker.yml/badge.svg)
-[![Platform](https://img.shields.io/badge/Platform-Telegram-blue)](https://desktop.telegram.org/)
-[![Build Status](https://app.travis-ci.com/sak007/MyDollarBot-BOTGo.svg?branch=main)](https://app.travis-ci.com/github/sak007/MyDollarBot-BOTGo)
-[![codecov](https://codecov.io/gh/sak007/MyDollarBot-BOTGo/branch/main/graph/badge.svg?token=5AYMR8MNMP)](https://codecov.io/gh/sak007/MyDollarBot-BOTGo)
-[![GitHub open issues](https://img.shields.io/github/issues/ymdatta/DollarBot)](https://github.com/ymdatta/DollarBot/issues?q=is%3Aopen+is%3Aissue)
-[![GitHub closed issues](https://img.shields.io/github/issues-closed/ymdatta/DollarBot)](https://github.com/ymdatta/DollarBot/issues?q=is%3Aissue+is%3Aclosed)
-![Github pull requests](https://img.shields.io/github/issues-pr/ymdatta/DollarBot)
 
-![Fork](https://img.shields.io/github/forks/deekay2310/MyDollarBot?style=social)
-
-[![GitHub contributors](https://img.shields.io/github/contributors/ymdatta/DollarBot)](https://github.com/codersmiti/DollarBot/graphs/contributors)
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white) <br>
+[![DOI](https://zenodo.org/badge/894631395.svg)](https://doi.org/10.5281/zenodo.14225916) <br>
+![MIT license](https://img.shields.io/badge/License-MIT-green.svg) <br>
+[![Documentation Status](https://readthedocs.org/projects/ansicolortags/badge/?version=latest)](https://github.com/codersmiti/DollarBot/README.md) <br>
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/codersmiti/DollarBot) <br>
+![GitHub Issues or Pull Requests](https://img.shields.io/github/issues-pr-closed/codersmiti/DollarBot) <br>
+[![Syntax Checker](https://github.com/codersmiti/DollarBot/actions/workflows/syntax_check.yml/badge.svg)](https://github.com/codersmiti/DollarBot/actions/workflows/syntax_check.yml) <br>
+[![Code Quality](https://github.com/codersmiti/DollarBot/actions/workflows/code_quality.yml/badge.svg)](https://github.com/codersmiti/DollarBot/actions/workflows/code_quality.yml) <br>
+[![Platform](https://img.shields.io/badge/Platform-Telegram-blue)](https://desktop.telegram.org/) <br>
 <hr>
 
 
@@ -98,9 +94,7 @@ This bot has following functionalities:
 
 ## Punch Line
 
-* "If you can't measure it, you can't improve it." - Peter Drucker
-
-  Use DollarBot to measure your expenses and spend wisely.
+Be Smart and Spend Wise, Track Every Penny, Save Every Dollar !!
 
 ## Table of Contents
 
@@ -108,18 +102,14 @@ This bot has following functionalities:
 - [Tech Stack](#techstack)
 - [Development Tools](#development-tools) 
 - [Installation](#installation)
-  - [Pre-requisites](#pre-requisites)
   - [Actual installation](#actual-installation)
 - [Testing](#testing)
 - [Code Coverage](#code-coverage)
-- [Usage](#usage)
 - [Configuration](#configuration)
 - [Road Map](#roadmap)
 - [Contributing](#contributing)
 - [License](#license)
-- [Acknowledgements](#acknowledgements)
 - [Support](#support)
-- [FAQs](#faq)
 - [Changelogs](#changelogs)
 - [Code of Conduct](#code-of-conduct)
 
@@ -132,12 +122,6 @@ This bot has following functionalities:
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 
 Starting from the external library dependencies to the testing of the application, everything is done in **Python 3**.
-
-Python specific tools used:
-
-- flake8
-- codecov
-- pytest
 
 ## Development tools 
 
