@@ -1,15 +1,15 @@
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10210342.svg)](https://doi.org/10.5281/zenodo.10210342)
+[![DOI](https://zenodo.org/badge/894631395.svg)](https://doi.org/10.5281/zenodo.14225916)
 
   ```yaml
-  version: 2.1
+  version: 3.0
   authors:
-    - Mohana Datta Yelugoti
-    - Rishabh Kala
-    - Sreehith Yachamaneni
+    - Smiti Kothari
+    - Jayneel Shah
+    - Vedant Patel
   license: MIT License
-  repository-code: https://github.com/ymdatta/DollarBot
+  repository-code: https://github.com/codersmiti/DollarBot
   identifiers:
-    - Description: This is the collection of archived snapshots of v2.1 of DollarBot
+    - Description: This is the collection of archived snapshots of v3.0 of DollarBot
     type: doi
-    value: 10.5281/zenodo.10210342
+    value: 10.5281/zenodo.14225916
   ```
