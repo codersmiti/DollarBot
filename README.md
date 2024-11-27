@@ -1,5 +1,6 @@
 <hr>
-![DOI](https://zenodo.org/badge/894631395.svg)](https://doi.org/10.5281/zenodo.14225916)
+
+[![DOI](https://zenodo.org/badge/894631395.svg)](https://doi.org/10.5281/zenodo.14225916)
 ![MIT license](https://img.shields.io/badge/License-MIT-green.svg)
 ![GitHub](https://img.shields.io/badge/Language-Python-blue.svg)
 ![Style Checker](https://github.com/ymdatta/DollarBot/actions/workflows/styleChecker.yml/badge.svg)
@@ -14,6 +15,7 @@
 
 [![GitHub contributors](https://img.shields.io/github/contributors/ymdatta/DollarBot)](https://github.com/codersmiti/DollarBot/graphs/contributors)
 <hr>
+
 
 # 💰 DollarBot v3.0 - Budgeting	 On The Go 💰
 
